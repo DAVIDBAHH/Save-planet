@@ -2,38 +2,23 @@ import turtle
 import matplotlib.pyplot as plt
 import multiprocessing
 
-# Carbon emissions data (in millions of tons) for the last 10 years
-years = list(range(2013, 2023))
-carbon_emissions = [1000, 950, 900, 850, 800, 750, 700, 650, 600, 550]  # Sample data
+# Дані про запаси деревини (в мільйонах кубічних метрів) за останні 12 років
+роки = list(range(2013, 2025))
+запаси_деревини = [300, 320, 310, 330, 340, 350, 360, 370, 380, 390, 400, 410]  # Приклад даних
 
-# Measures to reduce carbon emissions
-measures = {
-    'Increase the use of renewable energy sources': 0.15,
-    'Energy efficiency': 0.1,
-    'Sustainable transport': 0.1,
-    'Reforestation': 0.05,
-}
-
-# Function to calculate emission reductions
-def reduce_emissions(emissions, measures):
-    for measure, reduction in measures.items():
-        emissions *= (1 - reduction)
-        print(f'After applying the measure "{measure}", carbon emissions are: {emissions:.2f} million tons')
-    return emissions
-
-# Data visualization
-def plot_carbon_emissions():
+# Function to visualize wood stock
+def plot_wood_stock():
     plt.figure(figsize=(10, 5))
-    plt.plot(years, carbon_emissions, marker='o', label='Carbon Emissions')
-    plt.title('Carbon Emissions Over the Last 10 Years')
-    plt.xlabel('Year')
-    plt.ylabel('Carbon Emissions (million tons)')
-    plt.xticks(years)
+    plt.plot(роки, запаси_деревини, marker='o', label='Запас деревини')
+    plt.title('Запас деревини в лісах України з 2013 по 2024 рік')
+    plt.xlabel('Рік')
+    plt.ylabel('Запас деревини (мільйони кубічних метрів)')
+    plt.xticks(роки)
     plt.grid()
     plt.legend()
     plt.show()
 
-# Drawing a tree
+# Function to draw a tree
 def draw_tree():
     tu = turtle.Turtle()
     tu.goto(0, -300)
@@ -63,16 +48,10 @@ def draw_tree():
     turtle.done()
 
 if __name__ == '__main__':
-    # Apply measures and calculate new emissions
-    current_emissions = carbon_emissions[-1]
-    print(f'\nCurrent carbon emissions: {current_emissions} million tons')
-    new_emissions = reduce_emissions(current_emissions, measures)
-    print(f'\nNew carbon emissions after applying measures: {new_emissions:.2f} million tons')
-    
-    # Start visualization and tree drawing in separate processes
-    plot_process = multiprocessing.Process(target=plot_carbon_emissions)
-    draw_process = multiprocessing.Process(target=draw_tree)
-    plot_process.start()
-    draw_process.start()
-    plot_process.join()
-    draw_process.join()
+    # Запуск візуалізації та малювання дерева в окремих процесах
+    process_plot = multiprocessing.Process(target=plot_wood_stock)
+    process_draw = multiprocessing.Process(target=draw_tree)
+    process_plot.start()
+    process_draw.start()
+    process_plot.join()
+    process_draw.join()
